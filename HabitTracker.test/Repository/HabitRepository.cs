@@ -34,4 +34,31 @@ public class HabitRepository : IHabitRepository
             .Distinct()
             .ToListAsync();
     }
+
+    public async Task ToggleHabitForDay(int habitId, DateTime date)
+    {
+        var day = await _context.Days.FirstOrDefaultAsync(d => d.Date == date);
+
+        if (day == null)
+        {
+            day = new Day { Date = date };
+            _context.Days.Add(day);
+            await _context.SaveChangesAsync();
+        }
+
+        var existingDayHabit = await _context.DayHabits
+            .FirstOrDefaultAsync(dh => dh.DayId == day.Id && dh.HabitId == habitId);
+
+        if (existingDayHabit != null)
+        {
+            _context.DayHabits.Remove(existingDayHabit);
+        }
+        else
+        {
+            var newDayHabit = new DayHabit { DayId = day.Id, HabitId = habitId };
+            _context.DayHabits.Add(newDayHabit);
+        }
+
+        await _context.SaveChangesAsync();
+    }
 }

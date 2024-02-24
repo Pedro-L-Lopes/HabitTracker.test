@@ -75,4 +75,21 @@ public class HabitController : ControllerBase
             return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
         }
     }
+
+    [HttpPatch("{id}/toggle")]
+    public async Task<IActionResult> ToggleHabitForDay(int id, [FromQuery] string date)
+    {
+        if (!DateTime.TryParse(date, out DateTime parsedDate))
+            return BadRequest("Formato de data inválido");
+
+        try
+        {
+            await _habitService.ToggleHabitForDay(id, parsedDate);
+            return Ok("Atualizado");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+        }
+    }
 }
