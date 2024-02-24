@@ -1,4 +1,5 @@
-﻿using HabitTracker.test.Models;
+﻿using HabitTracker.test.DTOs;
+using HabitTracker.test.Models;
 
 namespace HabitTracker.test.Repository.Interfaces;
 public interface IHabitRepository
@@ -7,4 +8,5 @@ public interface IHabitRepository
     Task<List<Habit>> GetHabitsForDay(DateTime date);
     Task<List<int?>> GetCompletedHabitsForDay(DateTime date);
     Task ToggleHabitForDay(int habitId, DateTime date);
+    Task<List<SummaryDTO>> GetSummary();
 }

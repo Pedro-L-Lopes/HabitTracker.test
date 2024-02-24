@@ -45,4 +45,9 @@ public class HabitService : IHabitService
     {
         await _habitRepository.ToggleHabitForDay(habitId, date);
     }
+
+    public async Task<List<SummaryDTO>> GetSummary()
+    {
+        return await _habitRepository.GetSummary();
+    }
 }

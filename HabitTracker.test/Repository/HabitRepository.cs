@@ -1,4 +1,5 @@
 ﻿using HabitTracker.test.Context;
+using HabitTracker.test.DTOs;
 using HabitTracker.test.Models;
 using HabitTracker.test.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -61,4 +62,21 @@ public class HabitRepository : IHabitRepository
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<SummaryDTO>> GetSummary()
+    {
+        var summary = await _context.Days
+            .Select(d => new SummaryDTO
+            {
+                Id = d.Id,
+                Date = d.Date,
+                Completed = d.DayHabits.Count,
+                Amount = _context.HabitWeekDays
+                    .Count(hwd => d.Date.HasValue && hwd.WeekDay == (int)d.Date.Value.DayOfWeek)
+            })
+            .ToListAsync();
+
+        return summary;
+    }
+
 }

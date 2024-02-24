@@ -92,4 +92,18 @@ public class HabitController : ControllerBase
             return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
         }
     }
+
+    [HttpGet("summary")]
+    public async Task<IActionResult> GetSummary()
+    {
+        try
+        {
+            var summary = await _habitService.GetSummary();
+            return Ok(summary);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+        }
+    }
 }
