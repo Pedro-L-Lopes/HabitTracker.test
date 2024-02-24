@@ -4,5 +4,5 @@ namespace HabitTracker.test.Services.Interfaces;
 public interface IHabitService
 {
     Task AddHabit(HabitDTO habitDTO);
-    Task<List<HabitDTO>> GetHabitsForDay(string date);
+    Task<(List<HabitDTO> possibleHabits, List<int?> completedHabits)> GetHabitsForDay(string date);
 }

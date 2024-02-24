@@ -27,13 +27,18 @@ public class HabitService : IHabitService
         await _habitRepository.Create(habitEntity);
     }
 
-    public async Task<List<HabitDTO>> GetHabitsForDay(string date)
+    public async Task<(List<HabitDTO> possibleHabits, List<int?> completedHabits)> GetHabitsForDay(string date)
     {
         if (!DateTime.TryParse(date, out DateTime parsedDate))
             throw new ArgumentException("Formato de data inválido");
 
-        var habits = await _habitRepository.GetHabitsForDay(parsedDate);
+        // Consulta para encontrar hábitos válidos para o dia especificado
+        var possibleHabits = await _habitRepository.GetHabitsForDay(parsedDate);
 
-        return _mapper.Map<List<Habit>, List<HabitDTO>>(habits);
+        // Consulta para encontrar os hábitos completados para o dia especificado
+        var completedHabits = await _habitRepository.GetCompletedHabitsForDay(parsedDate);
+
+        return (_mapper.Map<List<Habit>, List<HabitDTO>>(possibleHabits), completedHabits);
     }
+
 }

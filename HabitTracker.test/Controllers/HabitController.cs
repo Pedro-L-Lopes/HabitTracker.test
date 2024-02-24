@@ -1,6 +1,5 @@
 ﻿using HabitTracker.test.DTOs;
 using HabitTracker.test.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HabitTracker.test.Controllers;
@@ -42,13 +41,30 @@ public class HabitController : ControllerBase
         }
     }
 
-    [HttpGet("Day")]
+    /// <summary>
+    /// Retrieves habits available for a specific day of the week.
+    /// </summary>
+    /// <param name="date">A string representing the date for which habits are requested. The expected format is "YYYY-MM-DD".</param>
+    /// <returns>Returns a list of habits available and/or completed for the specified day. 
+    /// {
+    ///"possibleHabits": [
+    ///   {
+    ///        "id": 1,
+    ///        "title": "Beber 2L água",
+    ///        "createdAt": "2022-12-31T00:00:00",
+    ///       "weekDays": []
+    ///   }
+    /// ],
+    /// "completedHabits": [1]
+    ///}
+    /// </returns>
+    [HttpGet("day")]
     public async Task<IActionResult> GetHabitsForDay([FromQuery] string date)
     {
         try
         {
-            var habitsForDay = await _habitService.GetHabitsForDay(date);
-            return Ok(habitsForDay);
+            var (possibleHabits, completedHabits) = await _habitService.GetHabitsForDay(date);
+            return Ok(new { possibleHabits, completedHabits });
         }
         catch (ArgumentException ex)
         {

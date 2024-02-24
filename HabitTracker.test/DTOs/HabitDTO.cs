@@ -13,5 +13,6 @@ public class HabitDTO
 
     [JsonIgnore]
     public List<DayHabit>? DayHabits { get; set; }
+
     public List<int>? WeekDays { get; set; }
 }
