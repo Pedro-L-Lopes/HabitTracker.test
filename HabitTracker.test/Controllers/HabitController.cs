@@ -11,7 +11,12 @@ public class HabitController : ControllerBase
 {
     private readonly IHabitService _habitService;
 
-    [HttpPost("habits")]
+    public HabitController(IHabitService habitService)
+    {
+        _habitService = habitService;
+    }
+
+    [HttpPost]
     public async Task<IActionResult> CreateHabit([FromBody] HabitDTO habitDTO)
     {
         if (!ModelState.IsValid)

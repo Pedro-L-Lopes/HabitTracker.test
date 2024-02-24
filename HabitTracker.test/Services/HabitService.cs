@@ -22,9 +22,8 @@ public class HabitService : IHabitService
         {
             Title = habitDTO.Title,
             CreatedAt = DateTime.Now,
-            WeekDays = habitDTO.WeekDays.Select(day => new HabitWeekDays { WeekDay = day.WeekDay }).ToList()
+            WeekDays = habitDTO.WeekDays.Select(day => new HabitWeekDays { WeekDay = day }).ToList()
         };
-
         await _habitRepository.Create(habitEntity);
     }
 

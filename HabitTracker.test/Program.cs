@@ -1,4 +1,8 @@
 using HabitTracker.test.Context;
+using HabitTracker.test.Repository;
+using HabitTracker.test.Repository.Interfaces;
+using HabitTracker.test.Services;
+using HabitTracker.test.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +21,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // DTOs
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IHabitRepository, HabitRepository>();
+builder.Services.AddScoped<IHabitService, HabitService>();
 
 var app = builder.Build();
 

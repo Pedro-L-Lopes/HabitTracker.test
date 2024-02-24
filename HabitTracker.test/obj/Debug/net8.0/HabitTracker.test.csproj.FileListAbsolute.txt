@@ -103,3 +103,4 @@ C:\Users\ghost\Desktop\habittracker\HabitTracker.test\HabitTracker.test\obj\Debu
 C:\Users\ghost\Desktop\habittracker\HabitTracker.test\HabitTracker.test\obj\Debug\net8.0\HabitTracker.test.genruntimeconfig.cache
 C:\Users\ghost\Desktop\habittracker\HabitTracker.test\HabitTracker.test\obj\Debug\net8.0\ref\HabitTracker.test.dll
 C:\Users\ghost\Desktop\habittracker\HabitTracker.test\HabitTracker.test\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\ghost\Desktop\habittracker\HabitTracker.test\HabitTracker.test\obj\Debug\net8.0\HabitTracker.test.sourcelink.json
