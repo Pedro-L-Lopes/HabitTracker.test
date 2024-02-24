@@ -2,6 +2,7 @@
 using HabitTracker.test.Models;
 using HabitTracker.test.Repository.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace HabitTracker.test.Repository;
 public class HabitRepository : IHabitRepository
@@ -17,5 +18,12 @@ public class HabitRepository : IHabitRepository
         _context.Habits.Add(habit);
         await _context.SaveChangesAsync();
         return habit;
+    }
+
+    public async Task<List<Habit>> GetHabitsForDay(DateTime date)
+    {
+       return await _context.Habits
+        .Where(h => h.CreatedAt.Date <= date.Date && h.WeekDays.Any(w => w.WeekDay == (int)date.DayOfWeek))
+        .ToListAsync();
     }
 }
