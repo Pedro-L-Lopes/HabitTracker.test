@@ -85,7 +85,7 @@ public class HabitController : ControllerBase
         try
         {
             await _habitService.ToggleHabitForDay(id, parsedDate);
-            return Ok("Atualizado");
+            return Ok("Hábito atualizado");
         }
         catch (Exception ex)
         {
@@ -106,4 +106,19 @@ public class HabitController : ControllerBase
             return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
         }
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _habitService.Delete(id);
+            return Ok("Hábito excluído com sucesso");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
 }

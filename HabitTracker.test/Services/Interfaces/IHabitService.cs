@@ -7,4 +7,5 @@ public interface IHabitService
     Task<(List<HabitDTO> possibleHabits, List<int?> completedHabits)> GetHabitsForDay(string date);
     Task ToggleHabitForDay(int habitId, DateTime date);
     Task<List<SummaryDTO>> GetSummary();
+    Task Delete(int id);
 }

@@ -80,4 +80,19 @@ public class HabitRepository : IHabitRepository
 
         return summary;
     }
+
+    public async Task Delete(int habitId)
+    {
+        var habit = await _context.Habits.FindAsync(habitId);
+        if (habit != null)
+        {
+            _context.Habits.Remove(habit);
+            await _context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new ArgumentException("Hábito não encontrado");
+        }
+    }
+
 }

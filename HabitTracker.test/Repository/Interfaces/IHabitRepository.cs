@@ -9,4 +9,5 @@ public interface IHabitRepository
     Task<List<int?>> GetCompletedHabitsForDay(DateTime date);
     Task ToggleHabitForDay(int habitId, DateTime date);
     Task<List<SummaryDTO>> GetSummary();
+    Task Delete(int id);
 }

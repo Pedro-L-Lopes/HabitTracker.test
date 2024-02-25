@@ -50,4 +50,9 @@ public class HabitService : IHabitService
     {
         return await _habitRepository.GetSummary();
     }
+
+    public async Task Delete(int habitId)
+    {
+        await _habitRepository.Delete(habitId);
+    }
 }
