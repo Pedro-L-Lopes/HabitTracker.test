@@ -22,9 +22,9 @@ public class HabitRepository : IHabitRepository
 
     public async Task<List<Habit>> GetHabitsForDay(DateTime date)
     {
-       return await _context.Habits
-        .Where(h => h.CreatedAt.Date <= date.Date && h.WeekDays.Any(w => w.WeekDay == (int)date.DayOfWeek))
-        .ToListAsync();
+        return await _context.Habits
+         .Where(h => h.CreatedAt.Date <= date.Date && h.WeekDays.Any(w => w.WeekDay == (int)date.DayOfWeek))
+         .ToListAsync();
     }
 
     public async Task<List<int?>> GetCompletedHabitsForDay(DateTime date)
@@ -72,11 +72,12 @@ public class HabitRepository : IHabitRepository
                 Date = d.Date,
                 Completed = d.DayHabits.Count,
                 Amount = _context.HabitWeekDays
-                    .Count(hwd => d.Date.HasValue && hwd.WeekDay == (int)d.Date.Value.DayOfWeek)
+                    .Count(hwd => d.Date.HasValue &&
+                                  hwd.WeekDay == (int)d.Date.Value.DayOfWeek &&
+                                  hwd.Habit.CreatedAt.Date <= d.Date.Value.Date)
             })
             .ToListAsync();
 
         return summary;
     }
-
 }
