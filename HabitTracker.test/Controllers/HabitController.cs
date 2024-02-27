@@ -79,6 +79,8 @@ public class HabitController : ControllerBase
     [HttpPatch("{id}/toggle")]
     public async Task<IActionResult> ToggleHabitForDay(int id, [FromQuery] string date)
     {
+        // Atualizar colocando verificação se o hábito estava disponível no dia da semana e se ele foi incluído no sistema no dia da atualização ou antes
+
         if (!DateTime.TryParse(date, out DateTime parsedDate))
             return BadRequest("Formato de data inválido");
 

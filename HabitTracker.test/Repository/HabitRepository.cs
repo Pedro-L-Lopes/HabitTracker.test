@@ -24,6 +24,7 @@ public class HabitRepository : IHabitRepository
     {
         return await _context.Habits
          .Where(h => h.CreatedAt.Date <= date.Date && h.WeekDays.Any(w => w.WeekDay == (int)date.DayOfWeek))
+         .AsNoTracking()
          .ToListAsync();
     }
 
