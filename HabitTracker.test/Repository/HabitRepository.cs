@@ -8,15 +8,19 @@ namespace HabitTracker.test.Repository;
 public class HabitRepository : IHabitRepository
 {
     private readonly AppDbContext _context;
+    private readonly IUnityOfWork _uof;
 
-    public HabitRepository(AppDbContext context)
+    public HabitRepository(AppDbContext context, IUnityOfWork uof)
     {
         _context = context;
+        _uof = uof;
     }
+
     public async Task<Habit> Create(Habit habit)
     {
         _context.Habits.Add(habit);
-        await _context.SaveChangesAsync();
+        //await _context.SaveChangesAsync();
+        await _uof.Commit();
         return habit;
     }
 
@@ -45,7 +49,7 @@ public class HabitRepository : IHabitRepository
         {
             day = new Day { Date = date };
             _context.Days.Add(day);
-            await _context.SaveChangesAsync();
+            await _uof.Commit();
         }
 
         var existingDayHabit = await _context.DayHabits
@@ -61,7 +65,7 @@ public class HabitRepository : IHabitRepository
             _context.DayHabits.Add(newDayHabit);
         }
 
-        await _context.SaveChangesAsync();
+        await _uof.Commit();
     }
 
     public async Task<List<SummaryDTO>> GetSummary()
@@ -88,7 +92,7 @@ public class HabitRepository : IHabitRepository
         if (habit != null)
         {
             _context.Habits.Remove(habit);
-            await _context.SaveChangesAsync();
+            await _uof.Commit();
         }
         else
         {

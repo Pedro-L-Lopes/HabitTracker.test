@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HabitTracker.test.Repository;
 public class UnityOfWork : IUnityOfWork
 {
-    public IHabitRepository? _habitRepository;
+    private IHabitRepository? _habitRepository;
     public AppDbContext _context;
 
     public UnityOfWork(AppDbContext context)
@@ -17,7 +17,7 @@ public class UnityOfWork : IUnityOfWork
     {
         get
         {
-            return _habitRepository ??= new HabitRepository(_context);
+            return _habitRepository ??= new HabitRepository(_context, this);
         }
     }
 
