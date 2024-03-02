@@ -7,12 +7,12 @@ using HabitTracker.test.Services.Interfaces;
 namespace HabitTracker.test.Services;
 public class HabitService : IHabitService
 {
-    private readonly IHabitRepository _habitRepository;
+    private readonly IUnityOfWork _uof;
     private readonly IMapper _mapper;
 
-    public HabitService(IHabitRepository habitRepository, IMapper mapper)
+    public HabitService(IUnityOfWork uof, IMapper mapper)
     {
-        _habitRepository = habitRepository;
+        _uof = uof;
         _mapper = mapper;
     }
 
@@ -24,7 +24,7 @@ public class HabitService : IHabitService
             CreatedAt = DateTime.Now.Date,
             WeekDays = habitDTO.WeekDays.Select(day => new HabitWeekDays { WeekDay = day }).ToList()
         };
-        await _habitRepository.Create(habitEntity);
+        await _uof.HabitRepository.Create(habitEntity);
     }
 
     public async Task<(List<HabitDTO> possibleHabits, List<int?> completedHabits)> GetHabitsForDay(string date)
@@ -33,26 +33,26 @@ public class HabitService : IHabitService
             throw new ArgumentException("Formato de data inválido");
 
         // Consulta para encontrar hábitos válidos para o dia especificado
-        var possibleHabits = await _habitRepository.GetHabitsForDay(parsedDate);
+        var possibleHabits = await _uof.HabitRepository.GetHabitsForDay(parsedDate);
 
         // Consulta para encontrar os hábitos completados para o dia especificado
-        var completedHabits = await _habitRepository.GetCompletedHabitsForDay(parsedDate);
+        var completedHabits = await _uof.HabitRepository.GetCompletedHabitsForDay(parsedDate);
 
         return (_mapper.Map<List<Habit>, List<HabitDTO>>(possibleHabits), completedHabits);
     }
 
     public async Task ToggleHabitForDay(int habitId, DateTime date)
     {
-        await _habitRepository.ToggleHabitForDay(habitId, date);
+        await _uof.HabitRepository.ToggleHabitForDay(habitId, date);
     }
 
     public async Task<List<SummaryDTO>> GetSummary()
     {
-        return await _habitRepository.GetSummary();
+        return await _uof.HabitRepository.GetSummary();
     }
 
     public async Task Delete(int habitId)
     {
-        await _habitRepository.Delete(habitId);
+        await _uof.HabitRepository.Delete(habitId);
     }
 }
