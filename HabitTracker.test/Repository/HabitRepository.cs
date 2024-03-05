@@ -3,6 +3,7 @@ using HabitTracker.test.DTOs;
 using HabitTracker.test.Models;
 using HabitTracker.test.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HabitTracker.test.Repository;
 public class HabitRepository : IHabitRepository
@@ -31,6 +32,8 @@ public class HabitRepository : IHabitRepository
          .AsNoTracking()
          .ToListAsync();
     }
+
+    
 
     public async Task<List<int?>> GetCompletedHabitsForDay(DateTime date)
     {
@@ -86,6 +89,25 @@ public class HabitRepository : IHabitRepository
         return summary;
     }
 
+    public async Task<List<HabitDTO>> GetAllHabits()
+    {
+        var habits = await _context.Habits
+            .Select(h => new HabitDTO
+            {
+                Id = h.Id,
+                Title = h.Title,
+                CreatedAt = h.CreatedAt,
+                WeekDays = _context.HabitWeekDays
+                    .Where(hwd => hwd.HabitId == h.Id)
+                    .Select(hwd => hwd.WeekDay.GetValueOrDefault())
+                    .ToList()
+            })
+            .ToListAsync();
+
+        return habits;
+    }
+
+
     public async Task Delete(int habitId)
     {
         var habit = await _context.Habits.FindAsync(habitId);
@@ -99,5 +121,4 @@ public class HabitRepository : IHabitRepository
             throw new ArgumentException("Hábito não encontrado");
         }
     }
-
 }

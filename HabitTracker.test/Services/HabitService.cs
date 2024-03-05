@@ -55,4 +55,18 @@ public class HabitService : IHabitService
     {
         await _uof.HabitRepository.Delete(habitId);
     }
+
+    // Service
+    public async Task<List<HabitDTO>> GetAllHabits()
+    {
+        var habits = await _uof.HabitRepository.GetAllHabits();
+        var habitDTOs = habits.Select(habit =>
+        {
+            var habitDTO = _mapper.Map<HabitDTO>(habit);
+           
+            return habitDTO;
+        }).ToList();
+        return habitDTOs;
+    }
+
 }

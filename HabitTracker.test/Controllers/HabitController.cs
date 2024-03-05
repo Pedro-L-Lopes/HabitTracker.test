@@ -123,4 +123,18 @@ public class HabitController : ControllerBase
         }
     }
 
+    [HttpGet("allHabits")]
+    public async Task<IActionResult> GetAllHabits()
+    {
+        try
+        {
+            var habits = await _habitService.GetAllHabits();
+            return Ok(habits);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+        }
+    }
+
 }
